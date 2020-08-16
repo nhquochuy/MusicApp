@@ -12,14 +12,14 @@ import UIKit
 
 extension UITableView {
     // MARK: Function
-    func reloadDataSavingSelections(indexPath: IndexPath?, musicButtonState: MusicButtonState) {
-        
-        self.reloadData()
-        
-        if let rowIndex = indexPath {
-            let cell = self.cellForRow(at: rowIndex) as! ListMusicTableViewCell
-            cell.isSelected = true
-            cell.controlButton.setMusicButton(musicButtonState: musicButtonState)
-        }
-    }
+//    func reloadDataSavingSelections(indexPath: IndexPath?, musicButtonState: MusicButtonState) {
+//
+//        self.reloadData()
+//
+//        if let rowIndex = indexPath {
+//            let cell = self.cellForRow(at: rowIndex) as! ListMusicTableViewCell
+//            cell.isSelected = true
+//            cell.controlButton.setMusicButton(musicButtonState: musicButtonState)
+//        }
+//    }
 }

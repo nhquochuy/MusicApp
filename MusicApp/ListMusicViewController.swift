@@ -30,7 +30,7 @@ class ListMusicViewController: UIViewController {
     
     // MARK: Outlet
     @IBOutlet weak var coverImage: CircleImage!
-    @IBOutlet weak var musicListTableView: UITableView!
+    @IBOutlet weak var musicListTableView: MusicListTableView!
 
     // MARK: Override
     override func viewDidLoad() {
@@ -214,7 +214,6 @@ extension ListMusicViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Init
         let music = self.musicList[indexPath.row]
-        guard let player  = self.player else { return }
         
         let detailView = storyboard?.instantiateViewController(identifier: "detailview") as! DetailMusicViewController
         self.navigationController?.pushViewController(detailView, animated: false)
@@ -225,9 +224,11 @@ extension ListMusicViewController: UITableViewDataSource, UITableViewDelegate {
         // Variable
         detailView.musicIndex = indexPath.row
           
-        if player.isPlaying && self.playingMusicID == music.id {
-            detailView.playingMusicID = music.id
-            detailView.currentTimePlayingMusic = Double(player.currentTime)
+        if let player = self.player {
+            if player.isPlaying && self.playingMusicID == music.id {
+                detailView.playingMusicID = music.id
+                detailView.currentTimePlayingMusic = Double(player.currentTime)
+            }
         }
         
         self.pauseMusic()
