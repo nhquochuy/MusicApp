@@ -9,16 +9,11 @@
 import Foundation
 import UIKit
 
-struct COLOR {
-    static let color01 = UIColor(red: 231/255, green: 231/255, blue: 238/255, alpha: 1.0) // #E7E7EE
-    static let color02 = UIColor(red: 205/255, green: 196/255, blue: 211/255, alpha: 1.0) // #CDC4D3
-    static let color03 = UIColor(red: 125/255, green: 89/255, blue: 127/255, alpha: 1.0) // #CDC4D3
-    static let color04 = UIColor(red: 225/255, green: 225/255, blue: 234/255, alpha: 1.0) // #E1E1EA
-    static let color05 = UIColor(red: 225/255, green: 225/255, blue: 234/255, alpha: 1.0) // #AAAAAA
-    static let color06 = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0) // #AAAAAB
+struct NOTIFICATIONNAME {
+    static let cellViewToListView = NSNotification.Name("cellViewToListView")
+    static let detailViewToListView = NSNotification.Name("detailViewToListView")
 }
 
-struct NOTIFICATIONNAME {
-    static let doMusic = NSNotification.Name("doMusic")
-    static let pushPlayingMusic = NSNotification.Name("pushPlayingMusic")
+struct APIURL {
+    static let apiMusicList = "https://run.mocky.io/v3/e7d7c811-97b1-4a8e-a555-654ad6cb6280"
 }

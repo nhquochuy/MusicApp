@@ -7,4 +7,5 @@ target 'MusicApp' do
 
   # Pods for MusicApp
 pod 'RealmSwift'
+pod 'Alamofire'
 end

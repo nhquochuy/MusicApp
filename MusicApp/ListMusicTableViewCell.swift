@@ -14,10 +14,9 @@ class ListMusicTableViewCell: UITableViewCell {
     // MARK: Variable
     var musicID = 0
     var responseInfor: [String: Any]?
-    var indexPath: IndexPath?
-    var contentColor = COLOR.color01
     
-    var controlButtonClickAction: ((MusicButtonState) -> Void)?
+    // Instance
+    var playerShared = AVPlayerHandler.shared
     
     // MARK: Outlet
     @IBOutlet weak var nameLabel: UILabel!
@@ -26,11 +25,12 @@ class ListMusicTableViewCell: UITableViewCell {
     
     // MARK: Action
     @IBAction func controlButtonClick(_ sender: MusicButton) {
-        self.convertMusicState(sender)
-        self.responseInfor = ["musicID" : self.musicID, "indexPath" : self.indexPath as Any, "musicButtonState" : sender.musicButtonState]
-        self.postNotification()
-        
-        self.controlButtonClickAction?(sender.musicButtonState)
+        // Remove Time Observer of Player
+        self.playerShared.removeTimeObsever()
+        // Init player if change Song
+        self.initPlayer()
+        // Handle Play or Pause Music
+        self.actionPlayer(musicButtonState: sender.musicButtonState)
     }
     
     // MARK: Override
@@ -45,19 +45,25 @@ class ListMusicTableViewCell: UITableViewCell {
     }
     
     // MARK: Function
-    private func setContentViewColor() {
-        self.isSelected = true
-    }
-    
-    private func convertMusicState(_ button: MusicButton) {
-        if button.musicButtonState == .play  {
-            button.musicButtonState = .pause
-        } else {
-            button.musicButtonState = .play
+    private func initPlayer() {
+        if self.playerShared.musicID != musicID {
+            self.playerShared.initPlayer(urlString: "", musicID: musicID)
         }
     }
     
-    private func postNotification() {
-        NotificationCenter.default.post(name: NOTIFICATIONNAME.doMusic, object: nil, userInfo: self.responseInfor)
+    private func actionPlayer(musicButtonState: MusicButtonState) {
+        if musicButtonState == .play {
+            self.playerShared.playPlayer()
+            self.postNotification(isPlaying: true)
+        } else {
+            //AVPlayerHandler.shared.removeTimeObsever()
+            self.playerShared.pausePlayer()
+            self.postNotification(isPlaying: false)
+        }
+    }
+    
+    private func postNotification(isPlaying: Bool) {
+        self.responseInfor = ["musicID" : musicID, "isPlaying" : isPlaying]
+        NotificationCenter.default.post(name: NOTIFICATIONNAME.cellViewToListView, object: nil, userInfo: self.responseInfor)
     }
 }

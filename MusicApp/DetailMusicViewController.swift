@@ -17,15 +17,19 @@ class DetailMusicViewController: UIViewController {
     }
     
     // MARK: Variable
-    let musicList = MusicRepository.instance.getAll()
-    var musicIndex = 0
-    var playingMusicID = -1
-    var currentTimePlayingMusic: Double = 0
-    var timer: Timer?
-    var angleCoverImage: CGFloat = 0
-    var player: AVAudioPlayer?
+    let musicList = MusicRepository.shared.getAll()
     var isPlayingState = false
     var responseInfor: [String: Any]?
+    var musicID = 0 {
+        didSet {
+            self.updateMusic()
+        }
+    }
+    var music: MusicModel?
+    
+    // Instance
+    let playerShared = AVPlayerHandler.shared
+    let musicRepositoryShared = MusicRepository.shared
     
     // MARK: Outlet
     @IBOutlet weak var coverImage: CircleImage!
@@ -41,65 +45,81 @@ class DetailMusicViewController: UIViewController {
     
     // MARK: Action
     @IBAction func dismissButtonClick(_ sender: UIButton) {
+        self.removeTimeObserver()
+        self.postNotification(isPlaying: isPlayingState)
         self.navigationController?.popViewController(animated: true)
-        self.postNotification()
-        self.pauseMusic()
     }
     
     @IBAction func playButtonClick(_ sender: MusicButton) {
-        self.convertMusicButton(sender)
-        self.callMusicAction()
+        self.removeTimeObserver()
+        self.initPlayer()
+        self.actionPlayer(musicButtonState: sender.musicButtonState)
+        self.doMusic()
     }
     
     @IBAction func prevButtonClick(_ sender: MusicButton) {
-        self.getMusicIndex(musicButtonState: sender.musicButtonState)
+        self.removeTimeObserver()
+        self.changeMusicID(musicButtonState: sender.musicButtonState)
+        self.setupObjectsControl()
         self.doMusic()
     }
     
     @IBAction func nextButtonClick(_ sender: MusicButton) {
-        self.getMusicIndex(musicButtonState: sender.musicButtonState)
+        self.removeTimeObserver()
+        self.changeMusicID(musicButtonState: sender.musicButtonState)
+        self.setupObjectsControl()
         self.doMusic()
     }
     
     @IBAction func timeSliderChange(_ sender: UISlider) {
-        self.currentTimeLabel.text = self.changeTimeFormat(second: Int(sender.value))
-        
-        if let player = self.player {
-            player.currentTime = Double(sender.value)
-            player.prepareToPlay()
-            player.play()
-            self.timerStart()
+        if let player = self.playerShared.player {
+            let changeTime = CMTime(seconds: Double(sender.value), preferredTimescale: 1)
+            
+            player.seek(to: changeTime) { [weak self] (isComplate) in
+                guard let this = self else { return }
+                this.currentTimeLabel.text = this.changeTimeFormat(second: Int(sender.value))
+            }
         }
     }
     
     // MARK: Override
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.setupView()
+        self.loadUI()
         self.doMusic()
-        //self.setupObjectsControl(musicIndex: self.musicIndex)
     }
     
     // MARK: Func
-    private func getMusicIndex(musicButtonState: MusicButtonState) {
-        let musicListCount = musicList.count
-        if musicButtonState == .next {
-            if musicIndex == musicListCount - 1 {
-                musicIndex = 0
+    private func changeMusicID(musicButtonState: MusicButtonState) {
+        if let music = self.music, let index = self.musicList.index(of: music) {
+            if musicButtonState == .next {
+                self.changeMusicIDNext(index: index)
             } else {
-                musicIndex += 1
-            }
-        } else {
-            if self.musicIndex == 0 {
-                self.musicIndex = musicListCount - 1
-            } else {
-                self.musicIndex -= 1
+                self.changeMusicIDPre(index: index)
             }
         }
     }
     
-    private func setupObjectsControl(musicIndex: Int) {
+    private func changeMusicIDNext(index: Int) {
+        var nextIndex = index  + 1
+        nextIndex = self.musicList.indices.contains(nextIndex) ? nextIndex : 0
+        self.musicID = self.musicList[nextIndex].id
+    }
+    
+    private func changeMusicIDPre(index: Int) {
+        var preIndex = index - 1
+        preIndex = self.musicList.indices.contains(preIndex) ? preIndex : (self.musicList.count - 1)
+        self.musicID = self.musicList[preIndex].id
+    }
+    
+    private func loadUI() {
+        // Basic View
+        self.setupView()
+        // Object Control
+        self.setupObjectsControl()
+    }
+    
+    private func setupObjectsControl() {
         self.loadCoverImage()
         self.loadNameSingerLabel()
         self.loadTimeLabel()
@@ -108,52 +128,63 @@ class DetailMusicViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = COLOR.color04
+        self.view.backgroundColor = .color04
         self.view.insetsLayoutMarginsFromSafeArea = true
     }
     
     private func loadCoverImage() {
-        let music = musicList[self.musicIndex]
-        guard let url = URL(string: music.cover_image_url) else { return }
-        
-        self.coverImage.loadCoverImage(url: url)
+        if let music = self.music {
+            guard let url = URL(string: music.cover_image_url) else { return }
+            self.coverImage.loadCoverImage(url: url)
+        }
     }
     
     private func loadNameSingerLabel() {
-        let music = self.musicList[self.musicIndex]
-        
-        self.nameLabel.text = music.name
-        self.singerLabel.text = music.singer
+        if let music = self.music {
+            self.nameLabel.text = music.name
+            self.singerLabel.text = music.singer
+        }
     }
     
     private func loadSlider() {
-        let music = self.musicList[self.musicIndex]
-        let currentTime = self.currentTimePlayingMusic
-        self.timeSlider.minimumValue = 0
-        self.timeSlider.maximumValue = Float(music.duration)
-        self.timeSlider.value = Float(currentTime)
+        if let music = self.music {
+            let currentPlayingTime = self.getCurrentPlayingTime()
+            
+            self.timeSlider.minimumValue = 0
+            self.timeSlider.maximumValue = Float(music.duration)
+            self.timeSlider.value = Float(currentPlayingTime)
+        }
     }
     
     private func loadTimeLabel() {
-        let music = self.musicList[self.musicIndex]
-        let currentTime = self.currentTimePlayingMusic
-        
-        print(music.duration)
-        self.currentTimeLabel.text = self.changeTimeFormat(second: Int(currentTime))
-        self.durationTimeLabel.text = self.changeTimeFormat(second: music.duration)
+        if let music = self.music {
+            let currentPlayingTime = self.getCurrentPlayingTime()
+            
+            self.currentTimeLabel.text = self.changeTimeFormat(second: currentPlayingTime)
+            self.durationTimeLabel.text = self.changeTimeFormat(second: music.duration)
+        }
     }
     
     private func loadControlButton() {
-        
-        let isPlaying = (self.player?.isPlaying) ?? false
-        
-        if isPlaying {
-            self.playButton.setMusicButton(musicButtonState: .pause, imageEdgeInset: 27)
-        } else {
-            self.playButton.setMusicButton(musicButtonState: .play, imageEdgeInset: 27)
+        if let music = self.music {
+            if music.isPlaying {
+                self.playButton.setMusicButton(musicButtonState: .pause, imageEdgeInset: 27)
+            } else {
+                self.playButton.setMusicButton(musicButtonState: .play, imageEdgeInset: 27)
+            }
+            self.prevButton.setMusicButton(musicButtonState: .prev, imageEdgeInset: 20)
+            self.nextButton.setMusicButton(musicButtonState: .next, imageEdgeInset: 20)
         }
-        self.prevButton.setMusicButton(musicButtonState: .prev, imageEdgeInset: 20)
-        self.nextButton.setMusicButton(musicButtonState: .next, imageEdgeInset: 20)
+    }
+    
+    private func getCurrentPlayingTime() -> Int {
+        var currentTime = 0
+        
+        if let music = self.music, let player = self.playerShared.player {
+            currentTime = Int((music.isPlaying) ? CMTimeGetSeconds(player.currentTime()) : 0)
+        }
+        
+        return currentTime
     }
     
     private func changeTimeFormat(second: Int) -> String {
@@ -163,128 +194,86 @@ class DetailMusicViewController: UIViewController {
         return minString + ":" + secondString
     }
     
-    private func convertMusicButton(_ sender: MusicButton) {
-        if sender.musicButtonState == .play {
-            sender.setMusicButton(musicButtonState: .pause, imageEdgeInset: 27)
+    private func convertMusicButton(musicButtonState: MusicButtonState) {
+        if musicButtonState == .play {
+            self.playButton.setMusicButton(musicButtonState: .pause, imageEdgeInset: 27)
         } else {
-            sender.setMusicButton(musicButtonState: .play, imageEdgeInset: 27)
+            self.playButton.setMusicButton(musicButtonState: .play, imageEdgeInset: 27)
         }
     }
     
     private func doMusic() {
-        let music = musicList[musicIndex]
-        
-        if self.playingMusicID != music.id || self.player == nil {
-            self.playingMusicID = music.id
-            self.initPlayer(songUrl: music.song_url)
-        }
-        
-        if self.currentTimePlayingMusic > 0 || self.isPlayingState {
-            self.currentTimePlayingMusic = 0
-            self.playMusic()
-        }
-        
-        self.setupObjectsControl(musicIndex: self.musicIndex)
-    }
-    
-    private func postNotification() {
-        let music =  musicList[musicIndex]
-        guard let player = self.player else { return }
-        responseInfor = ["musicButtonState": !(player.isPlaying) ? MusicButtonState.play : MusicButtonState.pause, "musicID": music.id ,"indexPath": IndexPath.init(row: musicIndex, section: 0) , "currentTime": player.currentTime, "angleCoverImage" : self.angleCoverImage]
-        NotificationCenter.default.post(name: NOTIFICATIONNAME.pushPlayingMusic, object: nil, userInfo: responseInfor)
-    }
-}
-
-// MARK: Extension
-// Do Music
-extension DetailMusicViewController {
-    func initPlayer(songUrl: String) {
-        print ("init Player")
-
-        guard let url = URL(string: songUrl) else { return }
-        do {
-            let data = try Data(contentsOf: url)
-            do {
-                player = try AVAudioPlayer(data: data)
-                player?.currentTime = self.currentTimePlayingMusic
-                player?.prepareToPlay()
-            } catch {
-                print("playMusic: Error at Player")
+        if let music = self.music {
+            if music.isPlaying {
+                self.addPeriodicTimeObserver()
             }
-        } catch {
-            print("playMusic: Error at Data")
         }
     }
     
-    func playMusic() {
-        self.playButton.setMusicButton(musicButtonState: .pause, imageEdgeInset: 27)
-        self.isPlayingState = true
-        guard let player = self.player else { return }
-        player.play()
-        self.timerStart()
+    private func addPeriodicTimeObserver() {
+        if let player = self.playerShared.player {
+            // Invoke callback every half second
+            let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+            // Add time observer. Invoke closure on the main queue.
+            print("DetailMusicViewController -> Add Time Obsever")
+            self.playerShared.timeObsever = player.addPeriodicTimeObserver(forInterval: interval, queue: nil, using: {
+                [weak self] time in
+                guard let this = self else { return }
+                this.updateUIBlock()
+            })
+        }
     }
     
-    func pauseMusic() {
-        self.playButton.setMusicButton(musicButtonState: .play, imageEdgeInset: 27)
-        self.isPlayingState = false
-        guard let player = self.player else { return }
-        player.stop()
-        self.timerStop()
+    private func updateUIBlock() {
+        if let player = self.playerShared.player {
+            self.coverImage.rotateCoverImage()
+            let currentPlayingTime = CMTimeGetSeconds(player.currentTime())
+            self.timeSlider.value = Float(currentPlayingTime)
+            self.currentTimeLabel.text = self.changeTimeFormat(second: Int(currentPlayingTime))
+        }
     }
     
-    private func callMusicAction() {
-        guard let player = self.player else { return }
-        
-        if player.isPlaying {
-            self.pauseMusic()
+    private func postNotification(isPlaying: Bool) {
+        self.responseInfor = (self.isPlayingState) ? ["musicID": self.musicID, "isPlaying" : isPlaying] : nil
+        NotificationCenter.default.post(name: NOTIFICATIONNAME.detailViewToListView, object: nil, userInfo: self.responseInfor)
+    }
+    
+    private func actionPlayer(musicButtonState: MusicButtonState) {
+        if musicButtonState == .play {
+            self.actionPlayBlock()
         } else {
-            self.playMusic()
+            self.actionPauseBlock()
         }
+    }
+    
+    private func actionPlayBlock() {
+        self.playerShared.playPlayer()
+        self.convertMusicButton(musicButtonState: .play)
+        self.musicRepositoryShared.updateStateProp(id: musicID, isSelected: true, isPlaying: true)
+        self.isPlayingState = true
+    }
+    
+    private func actionPauseBlock() {
+        self.playerShared.pausePlayer()
+        self.convertMusicButton(musicButtonState: .pause)
+        self.musicRepositoryShared.updateStateProp(id: musicID, isSelected: true, isPlaying: false)
+        self.isPlayingState = false
+    }
+    
+    private func initPlayer() {
+        if self.playerShared.musicID != self.musicID, let player = self.playerShared.player {
+            player.pause()
+            self.playerShared.initPlayer(urlString: "", musicID: musicID)
+        }
+    }
+    
+    private func removeTimeObserver() {
+        self.playerShared.removeTimeObsever()
+    }
+    
+    private func updateMusic() {
+        self.music = musicRepositoryShared.getById(id: self.musicID)
     }
 }
 
-// Do timer
-extension DetailMusicViewController {
-    func timerStart() {
-        guard timer == nil else { return }
-        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true, block: { [weak self] (time) in
-            guard let this = self else { return }
-            //print(this.player)
-            guard let player = this.player else { return }
-            if !player.isPlaying {
-                this.timerStop()
-            }
-            this.updateTimeSlider()
-            this.updateCurrentTimeLabel()
-            this.rotateCoverImage()
-        })
-        self.runLoopMain()
-    }
-    
-    func runLoopMain() {
-        guard let timer = self.timer else { return }
-        RunLoop.main.add(timer, forMode: .common)
-    }
-    
-    func timerStop() {
-        timer?.invalidate()
-        self.timer = nil
-    }
-    
-    func updateTimeSlider() {
-        if let player = self.player {
-            self.timeSlider.value = Float(player.currentTime)
-        }
-    }
-    
-    func updateCurrentTimeLabel() {
-        if let player = self.player {
-            self.currentTimeLabel.text = self.changeTimeFormat(second: Int(player.currentTime))
-        }
-    }
-    
-    func rotateCoverImage() {
-        self.angleCoverImage = (self.angleCoverImage == 360) ? 0 : (self.angleCoverImage + 1)
-        self.coverImage.transform = .init(rotationAngle: CGFloat.pi * self.angleCoverImage / 180)
-    }
-}
+

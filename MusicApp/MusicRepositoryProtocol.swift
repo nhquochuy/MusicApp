@@ -10,11 +10,14 @@ import Foundation
 import RealmSwift
 
 protocol MusicRepositoryProtocol {
-    func getAll() -> Results<MusicModel>
-    func getById(id: Int) -> MusicModel?
-    func add(musicmodel: MusicModel) -> Bool
-    func update(musicmodel: MusicModel) -> Bool
-    func delete(id: Int) -> Bool
+    associatedtype T where T: Object
+    associatedtype I
+    func getAll() -> Results<T>
+    func getById(id: I) -> T?
+    func add(musicmodel: T)
+    func updateStateProp(id: I, isSelected: Bool, isPlaying: Bool)
+    func resetDefaultStateProp()
+    func delete(id: I)
     func deleteAll()
     func printSomething()
 }

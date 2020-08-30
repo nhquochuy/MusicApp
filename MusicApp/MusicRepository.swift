@@ -10,9 +10,11 @@ import Foundation
 import RealmSwift
 
 class MusicRepository: MusicRepositoryProtocol {
+    typealias T = MusicModel
+    typealias I = Int
     
     // MARK: Static Instance
-    static let instance = MusicRepository()
+    static let shared = MusicRepository()
     
     private init() {}
     
@@ -28,36 +30,62 @@ class MusicRepository: MusicRepositoryProtocol {
     
     func getById(id: Int) -> MusicModel? {
         let realm = try! Realm()
-        //var result = MusicModel()
         let result = realm.objects(MusicModel.self).filter("id == " + String(id)).first
         return result
     }
     
-    func add(musicmodel: MusicModel) -> Bool {
+    private func incrementPrimaryKey() -> Int {
+        let realm = try! Realm()
+      return (realm.objects(MusicModel.self).max(ofProperty: "index") as Int? ?? 0) + 1
+    }
+    
+    func add(musicmodel: MusicModel) {
         let realm = try! Realm()
         try! realm.write {
+            musicmodel.index = incrementPrimaryKey()
             realm.add(musicmodel)
         }
-        return true
     }
     
-    func update(musicmodel: MusicModel) -> Bool {
+    func updateStateProp(id: Int, isSelected: Bool, isPlaying: Bool){
         let realm = try! Realm()
-        let music = musicmodel
+        
+        let objects = realm.objects(MusicModel.self)
         
         try! realm.write {
-            realm.add(music, update: .modified)
+            for object in objects {
+                if object.id == id {
+                    object.isSelected = isSelected
+                    object.isPlaying = isPlaying
+                } else {
+                    object.isSelected = false
+                    object.isPlaying = false
+                }
+                realm.add(object, update: .modified)
+            }
         }
-        return true
     }
     
-    func delete(id: Int) -> Bool {
+    func resetDefaultStateProp() {
         let realm = try! Realm()
-        guard let music = realm.objects(MusicModel.self).filter("id == " + String(id)).first else { return false }
+        
+        let objects = realm.objects(MusicModel.self)
+        
+        try! realm.write {
+            for object in objects {
+                object.isSelected = false
+                object.isPlaying = false
+                realm.add(object, update: .modified)
+            }
+        }
+    }
+    
+    func delete(id: Int){
+        let realm = try! Realm()
+        guard let music = realm.objects(MusicModel.self).filter("id == " + String(id)).first else { return }
         try! realm.write {
             realm.delete(music)
         }
-        return true
     }
     
     func deleteAll() {

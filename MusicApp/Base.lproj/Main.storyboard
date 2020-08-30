@@ -19,61 +19,82 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="358.5"/>
                                 <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WxW-YO-8Xp" customClass="CircleImage" customModule="MusicApp" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDd-7f-UaG" userLabel="CoverImageView" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
                                 <rect key="frame" x="103.5" y="75.5" width="207" height="207"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WxW-YO-8Xp" customClass="CircleImage" customModule="MusicApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="207" height="207"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="WxW-YO-8Xp" secondAttribute="height" multiplier="1:1" id="ftD-8r-7xf"/>
+                                    <constraint firstItem="WxW-YO-8Xp" firstAttribute="height" secondItem="RDd-7f-UaG" secondAttribute="height" id="034-2S-AZC"/>
+                                    <constraint firstItem="WxW-YO-8Xp" firstAttribute="centerX" secondItem="RDd-7f-UaG" secondAttribute="centerX" id="Ct7-5F-g0N"/>
+                                    <constraint firstItem="WxW-YO-8Xp" firstAttribute="centerY" secondItem="RDd-7f-UaG" secondAttribute="centerY" id="XtE-XW-Tes"/>
+                                    <constraint firstAttribute="width" secondItem="RDd-7f-UaG" secondAttribute="height" multiplier="1:1" id="cbD-R8-lhG"/>
+                                    <constraint firstItem="WxW-YO-8Xp" firstAttribute="width" secondItem="RDd-7f-UaG" secondAttribute="width" id="yYI-o8-gUt"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fOc-KM-gJY" customClass="MusicListTableView" customModule="MusicApp" customModuleProvider="target">
                                 <rect key="frame" x="10" y="348.5" width="394" height="537.5"/>
                                 <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="separatorColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="cvy-eA-Gjv" customClass="ListMusicTableViewCell" customModule="MusicApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="394" height="60.5"/>
+                                        <rect key="frame" x="0.0" y="28" width="394" height="66.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cvy-eA-Gjv" id="Vcf-Zh-s5S">
-                                            <rect key="frame" x="0.0" y="0.0" width="394" height="60.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="394" height="66.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2fD-3P-dyv">
-                                                    <rect key="frame" x="20" y="10" width="309" height="20.5"/>
+                                                    <rect key="frame" x="20" y="13" width="304" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uHa-w2-h1J">
-                                                    <rect key="frame" x="20" y="30.5" width="309" height="18"/>
+                                                    <rect key="frame" x="20" y="33.5" width="304" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbB-Dv-dgO" customClass="MusicButton" customModule="MusicApp">
-                                                    <rect key="frame" x="334" y="10" width="40" height="40.5"/>
-                                                    <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.91764705882352937" alpha="0.70288420376712324" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eN7-r1-yaR" userLabel="Control Button View" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
+                                                    <rect key="frame" x="334" y="13" width="40" height="40.5"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gbB-Dv-dgO" customClass="MusicButton" customModule="MusicApp">
+                                                            <rect key="frame" x="1" y="0.5" width="40" height="41.5"/>
+                                                            <color key="backgroundColor" red="0.88235294117647056" green="0.88235294117647056" blue="0.91764705882352937" alpha="0.70288420376712324" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <state key="normal">
+                                                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="controlButtonClick:" destination="cvy-eA-Gjv" eventType="touchUpInside" id="Qd7-er-EAw"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.93333333330000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="PGn-ZP-A4a"/>
-                                                        <constraint firstAttribute="width" secondItem="gbB-Dv-dgO" secondAttribute="height" multiplier="1:1" id="qQQ-hy-KEX"/>
+                                                        <constraint firstAttribute="width" constant="40" id="3Gp-jU-Zfu"/>
+                                                        <constraint firstItem="gbB-Dv-dgO" firstAttribute="width" secondItem="eN7-r1-yaR" secondAttribute="width" id="ERs-3M-9is"/>
+                                                        <constraint firstItem="gbB-Dv-dgO" firstAttribute="height" secondItem="eN7-r1-yaR" secondAttribute="height" multiplier="1.0125" id="QdQ-qB-8kg"/>
+                                                        <constraint firstItem="gbB-Dv-dgO" firstAttribute="centerY" secondItem="eN7-r1-yaR" secondAttribute="centerY" constant="1" id="SUu-oC-nKp"/>
+                                                        <constraint firstItem="gbB-Dv-dgO" firstAttribute="centerX" secondItem="eN7-r1-yaR" secondAttribute="centerX" constant="1" id="oek-by-ZC1"/>
+                                                        <constraint firstAttribute="width" secondItem="eN7-r1-yaR" secondAttribute="height" multiplier="1:1" id="rX7-XR-IHq"/>
                                                     </constraints>
-                                                    <state key="normal">
-                                                        <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="small"/>
-                                                    </state>
-                                                    <connections>
-                                                        <action selector="controlButtonClick:" destination="cvy-eA-Gjv" eventType="touchUpInside" id="Qd7-er-EAw"/>
-                                                    </connections>
-                                                </button>
+                                                </view>
                                             </subviews>
+                                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <constraints>
+                                                <constraint firstItem="eN7-r1-yaR" firstAttribute="top" secondItem="2fD-3P-dyv" secondAttribute="top" id="14b-Ae-Ocu"/>
                                                 <constraint firstItem="2fD-3P-dyv" firstAttribute="leading" secondItem="Vcf-Zh-s5S" secondAttribute="leading" constant="20" id="7Tu-0C-Vdg"/>
                                                 <constraint firstItem="uHa-w2-h1J" firstAttribute="trailing" secondItem="2fD-3P-dyv" secondAttribute="trailing" id="8N3-jJ-cpi"/>
-                                                <constraint firstItem="gbB-Dv-dgO" firstAttribute="leading" secondItem="2fD-3P-dyv" secondAttribute="trailing" constant="5" id="9k1-jm-s4a"/>
-                                                <constraint firstItem="2fD-3P-dyv" firstAttribute="top" secondItem="gbB-Dv-dgO" secondAttribute="top" id="Jo5-ah-gYf"/>
+                                                <constraint firstAttribute="trailing" secondItem="eN7-r1-yaR" secondAttribute="trailing" constant="20" id="IEV-YV-T8Y"/>
                                                 <constraint firstItem="uHa-w2-h1J" firstAttribute="leading" secondItem="2fD-3P-dyv" secondAttribute="leading" id="NJO-8I-ZMm"/>
-                                                <constraint firstItem="gbB-Dv-dgO" firstAttribute="top" secondItem="Vcf-Zh-s5S" secondAttribute="top" constant="10" id="ToX-lb-Nbc"/>
-                                                <constraint firstItem="gbB-Dv-dgO" firstAttribute="centerY" secondItem="Vcf-Zh-s5S" secondAttribute="centerY" id="feE-8c-Quo"/>
+                                                <constraint firstAttribute="bottom" secondItem="eN7-r1-yaR" secondAttribute="bottom" constant="13" id="WDO-XL-hcN"/>
                                                 <constraint firstItem="uHa-w2-h1J" firstAttribute="top" secondItem="2fD-3P-dyv" secondAttribute="bottom" id="l9i-nS-0PF"/>
-                                                <constraint firstAttribute="trailing" secondItem="gbB-Dv-dgO" secondAttribute="trailing" constant="20" id="tUX-bx-H5I"/>
+                                                <constraint firstItem="eN7-r1-yaR" firstAttribute="leading" secondItem="2fD-3P-dyv" secondAttribute="trailing" constant="10" id="n3N-eo-yky"/>
+                                                <constraint firstItem="eN7-r1-yaR" firstAttribute="top" secondItem="Vcf-Zh-s5S" secondAttribute="top" constant="13" id="tvb-4c-ZiQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -88,17 +109,17 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="ejW-aU-1WA" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.4" id="293-FG-lQV"/>
-                            <constraint firstItem="WxW-YO-8Xp" firstAttribute="width" secondItem="ejW-aU-1WA" secondAttribute="width" multiplier="0.5" id="8JE-ww-quL"/>
-                            <constraint firstItem="WxW-YO-8Xp" firstAttribute="centerX" secondItem="ejW-aU-1WA" secondAttribute="centerX" id="94d-3W-ZmS"/>
                             <constraint firstItem="ejW-aU-1WA" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="A5a-kt-ONy"/>
                             <constraint firstItem="fOc-KM-gJY" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.6" id="G2c-XY-YSv"/>
                             <constraint firstItem="ejW-aU-1WA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IyU-Qj-U6B"/>
+                            <constraint firstItem="RDd-7f-UaG" firstAttribute="centerX" secondItem="ejW-aU-1WA" secondAttribute="centerX" id="NEv-sw-gFf"/>
                             <constraint firstItem="fOc-KM-gJY" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" constant="-10" id="Olw-W1-hcq"/>
                             <constraint firstItem="ejW-aU-1WA" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Pv1-RK-Y6k"/>
                             <constraint firstAttribute="bottom" secondItem="fOc-KM-gJY" secondAttribute="bottom" constant="10" id="cVp-r1-h5e"/>
                             <constraint firstItem="fOc-KM-gJY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="10" id="peR-ow-TVk"/>
+                            <constraint firstItem="RDd-7f-UaG" firstAttribute="centerY" secondItem="ejW-aU-1WA" secondAttribute="centerY" id="sOk-Kw-He3"/>
+                            <constraint firstItem="RDd-7f-UaG" firstAttribute="width" secondItem="ejW-aU-1WA" secondAttribute="width" multiplier="0.5" id="uk1-D8-1X8"/>
                             <constraint firstItem="fOc-KM-gJY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="y6y-Wh-aWU"/>
-                            <constraint firstItem="WxW-YO-8Xp" firstAttribute="centerY" secondItem="ejW-aU-1WA" secondAttribute="centerY" id="zen-aj-Aij"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="etD-Ir-CaX"/>
                     </view>
@@ -123,12 +144,24 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gLa-Od-m3B">
                                 <rect key="frame" x="0.0" y="171" width="414" height="554"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="47V-uZ-owl" customClass="CircleImage" customModule="MusicApp" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WPu-JB-xFi" userLabel="CoverImageView" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
                                         <rect key="frame" x="52" y="0.0" width="310.5" height="310.5"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="47V-uZ-owl" customClass="CircleImage" customModule="MusicApp" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="310.5" height="310.5"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" secondItem="47V-uZ-owl" secondAttribute="height" multiplier="1:1" id="IJB-UO-LYZ"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" secondItem="47V-uZ-owl" secondAttribute="height" multiplier="1:1" id="1MD-dZ-0y2"/>
+                                            <constraint firstAttribute="width" secondItem="WPu-JB-xFi" secondAttribute="height" multiplier="1:1" id="DfK-9v-fPy"/>
+                                            <constraint firstItem="47V-uZ-owl" firstAttribute="width" secondItem="WPu-JB-xFi" secondAttribute="width" id="Pyf-kZ-Mfz"/>
+                                            <constraint firstItem="47V-uZ-owl" firstAttribute="centerX" secondItem="WPu-JB-xFi" secondAttribute="centerX" id="ZWc-Uh-gZa"/>
+                                            <constraint firstItem="47V-uZ-owl" firstAttribute="centerY" secondItem="WPu-JB-xFi" secondAttribute="centerY" id="kbB-8j-YIT"/>
                                         </constraints>
-                                    </imageView>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POj-mT-bJ9">
                                         <rect key="frame" x="180" y="330.5" width="54.5" height="22"/>
                                         <fontDescription key="fontDescription" name="Verdana-Bold" family="Verdana" pointSize="18"/>
@@ -163,43 +196,78 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Og-YH-A9a">
                                         <rect key="frame" x="0.0" y="476" width="414" height="78"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XP8-l7-Ldd" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BOc-zv-dTa" userLabel="PlayButtonView" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
                                                 <rect key="frame" x="168" y="0.0" width="78" height="78"/>
-                                                <connections>
-                                                    <action selector="playButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="MZJ-oc-ShV"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBx-S5-yDp" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XP8-l7-Ldd" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="78" height="78"/>
+                                                        <connections>
+                                                            <action selector="playButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="MZJ-oc-ShV"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="XP8-l7-Ldd" firstAttribute="height" secondItem="BOc-zv-dTa" secondAttribute="height" id="54I-Vd-Mo6"/>
+                                                    <constraint firstItem="XP8-l7-Ldd" firstAttribute="centerX" secondItem="BOc-zv-dTa" secondAttribute="centerX" id="l3N-hz-xGV"/>
+                                                    <constraint firstItem="XP8-l7-Ldd" firstAttribute="centerY" secondItem="BOc-zv-dTa" secondAttribute="centerY" id="wlX-6b-Vec"/>
+                                                    <constraint firstItem="XP8-l7-Ldd" firstAttribute="width" secondItem="BOc-zv-dTa" secondAttribute="width" id="zoL-Lm-Oca"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NNm-i6-9kU" userLabel="PreButtonView" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
                                                 <rect key="frame" x="96.5" y="13" width="51.5" height="52"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBx-S5-yDp" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="51.5" height="52"/>
+                                                        <connections>
+                                                            <action selector="prevButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="FQH-gA-f7R"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="LBx-S5-yDp" secondAttribute="height" multiplier="1:1" id="FyC-n1-TVU"/>
+                                                    <constraint firstItem="LBx-S5-yDp" firstAttribute="width" secondItem="NNm-i6-9kU" secondAttribute="width" id="ABQ-1n-GW8"/>
+                                                    <constraint firstItem="LBx-S5-yDp" firstAttribute="centerX" secondItem="NNm-i6-9kU" secondAttribute="centerX" id="Efg-i7-iF5"/>
+                                                    <constraint firstItem="LBx-S5-yDp" firstAttribute="height" secondItem="NNm-i6-9kU" secondAttribute="height" id="Io5-BF-HHs"/>
+                                                    <constraint firstAttribute="width" secondItem="NNm-i6-9kU" secondAttribute="height" multiplier="1:1" id="K8L-Sf-MsB"/>
+                                                    <constraint firstItem="LBx-S5-yDp" firstAttribute="centerY" secondItem="NNm-i6-9kU" secondAttribute="centerY" id="hSL-7V-B76"/>
                                                 </constraints>
-                                                <connections>
-                                                    <action selector="prevButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="FQH-gA-f7R"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ve-4n-tL2" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fON-dt-ZyT" userLabel="NextButtonView" customClass="NeumorphisDesignVIew" customModule="MusicApp" customModuleProvider="target">
                                                 <rect key="frame" x="266" y="13" width="51.5" height="52"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ve-4n-tL2" customClass="MusicButton" customModule="MusicApp" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="51.5" height="52"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" secondItem="8Ve-4n-tL2" secondAttribute="height" multiplier="1:1" id="gU7-lL-ysx"/>
+                                                        </constraints>
+                                                        <connections>
+                                                            <action selector="nextButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="V2c-DA-8MH"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="8Ve-4n-tL2" secondAttribute="height" multiplier="1:1" id="gU7-lL-ysx"/>
+                                                    <constraint firstAttribute="width" secondItem="fON-dt-ZyT" secondAttribute="height" multiplier="1:1" id="9Zr-Ko-XEL"/>
+                                                    <constraint firstItem="8Ve-4n-tL2" firstAttribute="centerX" secondItem="fON-dt-ZyT" secondAttribute="centerX" id="KYv-Kg-Il5"/>
+                                                    <constraint firstItem="8Ve-4n-tL2" firstAttribute="width" secondItem="fON-dt-ZyT" secondAttribute="width" id="Sx1-Jd-Tcm"/>
+                                                    <constraint firstItem="8Ve-4n-tL2" firstAttribute="height" secondItem="fON-dt-ZyT" secondAttribute="height" id="cAg-Vd-XtX"/>
+                                                    <constraint firstItem="8Ve-4n-tL2" firstAttribute="centerY" secondItem="fON-dt-ZyT" secondAttribute="centerY" id="k1Z-ns-SUu"/>
                                                 </constraints>
-                                                <connections>
-                                                    <action selector="nextButtonClick:" destination="H0A-7I-MU6" eventType="touchUpInside" id="V2c-DA-8MH"/>
-                                                </connections>
-                                            </button>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
-                                            <constraint firstItem="XP8-l7-Ldd" firstAttribute="width" secondItem="4Og-YH-A9a" secondAttribute="height" multiplier="1:1" id="1jb-im-eoc"/>
-                                            <constraint firstItem="XP8-l7-Ldd" firstAttribute="centerY" secondItem="4Og-YH-A9a" secondAttribute="centerY" id="4P8-14-JXu"/>
-                                            <constraint firstItem="8Ve-4n-tL2" firstAttribute="leading" secondItem="XP8-l7-Ldd" secondAttribute="trailing" constant="20" id="FOm-Wy-eCw"/>
-                                            <constraint firstItem="LBx-S5-yDp" firstAttribute="centerY" secondItem="XP8-l7-Ldd" secondAttribute="centerY" id="TNY-60-zzt"/>
-                                            <constraint firstItem="8Ve-4n-tL2" firstAttribute="centerY" secondItem="XP8-l7-Ldd" secondAttribute="centerY" id="TQW-Us-vL7"/>
-                                            <constraint firstItem="XP8-l7-Ldd" firstAttribute="height" secondItem="4Og-YH-A9a" secondAttribute="height" id="YAp-Aw-3cL"/>
-                                            <constraint firstItem="XP8-l7-Ldd" firstAttribute="centerX" secondItem="4Og-YH-A9a" secondAttribute="centerX" id="gVI-pW-Sey"/>
-                                            <constraint firstItem="LBx-S5-yDp" firstAttribute="height" secondItem="XP8-l7-Ldd" secondAttribute="height" multiplier="2/3" id="tJE-FZ-pVU"/>
-                                            <constraint firstItem="8Ve-4n-tL2" firstAttribute="height" secondItem="XP8-l7-Ldd" secondAttribute="height" multiplier="2/3" id="win-9x-BK4"/>
-                                            <constraint firstItem="XP8-l7-Ldd" firstAttribute="leading" secondItem="LBx-S5-yDp" secondAttribute="trailing" constant="20" id="zxK-gA-8iH"/>
+                                            <constraint firstItem="fON-dt-ZyT" firstAttribute="centerY" secondItem="BOc-zv-dTa" secondAttribute="centerY" id="1Jd-BW-e9o"/>
+                                            <constraint firstItem="NNm-i6-9kU" firstAttribute="height" secondItem="BOc-zv-dTa" secondAttribute="height" multiplier="2/3" id="59D-H6-ddi"/>
+                                            <constraint firstItem="NNm-i6-9kU" firstAttribute="centerY" secondItem="BOc-zv-dTa" secondAttribute="centerY" id="FBm-Eh-YKM"/>
+                                            <constraint firstItem="fON-dt-ZyT" firstAttribute="height" secondItem="BOc-zv-dTa" secondAttribute="height" multiplier="2/3" id="OaF-vu-QAB"/>
+                                            <constraint firstItem="BOc-zv-dTa" firstAttribute="centerX" secondItem="4Og-YH-A9a" secondAttribute="centerX" id="abn-yR-MAf"/>
+                                            <constraint firstItem="BOc-zv-dTa" firstAttribute="height" secondItem="4Og-YH-A9a" secondAttribute="height" id="fO6-o7-wvq"/>
+                                            <constraint firstItem="NNm-i6-9kU" firstAttribute="trailing" secondItem="BOc-zv-dTa" secondAttribute="leading" constant="-20" id="hdO-Ea-R5L"/>
+                                            <constraint firstItem="BOc-zv-dTa" firstAttribute="width" secondItem="4Og-YH-A9a" secondAttribute="height" multiplier="1:1" id="pxR-uN-3ue"/>
+                                            <constraint firstItem="BOc-zv-dTa" firstAttribute="centerY" secondItem="4Og-YH-A9a" secondAttribute="centerY" id="vN1-dL-ahX"/>
+                                            <constraint firstItem="fON-dt-ZyT" firstAttribute="leading" secondItem="BOc-zv-dTa" secondAttribute="trailing" constant="20" id="yx9-cN-CeI"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -210,22 +278,22 @@
                                     <constraint firstAttribute="trailing" secondItem="Nev-Ep-yYT" secondAttribute="trailing" constant="20" id="30I-GB-Tta"/>
                                     <constraint firstItem="WlD-yF-w0c" firstAttribute="leading" secondItem="gLa-Od-m3B" secondAttribute="leading" constant="20" id="3a1-QN-4UC"/>
                                     <constraint firstItem="Nev-Ep-yYT" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="3pM-Vx-J2h"/>
-                                    <constraint firstItem="47V-uZ-owl" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="8Ij-q9-Rus"/>
+                                    <constraint firstItem="POj-mT-bJ9" firstAttribute="top" secondItem="WPu-JB-xFi" secondAttribute="bottom" constant="20" id="9LY-Tz-RVE"/>
                                     <constraint firstItem="Nev-Ep-yYT" firstAttribute="leading" secondItem="gLa-Od-m3B" secondAttribute="leading" constant="20" id="CCp-YJ-FPs"/>
                                     <constraint firstItem="POj-mT-bJ9" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="DRN-gp-6U2"/>
+                                    <constraint firstItem="WPu-JB-xFi" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="Dyg-A0-IPb"/>
                                     <constraint firstItem="Nev-Ep-yYT" firstAttribute="top" secondItem="Xey-Qy-Rw2" secondAttribute="bottom" id="EIC-uc-NqA"/>
-                                    <constraint firstItem="47V-uZ-owl" firstAttribute="width" secondItem="gLa-Od-m3B" secondAttribute="width" multiplier="3/4" id="Hjh-cE-b3W"/>
                                     <constraint firstItem="Xey-Qy-Rw2" firstAttribute="trailing" secondItem="Nev-Ep-yYT" secondAttribute="trailing" id="Kwh-hh-Mo8"/>
+                                    <constraint firstItem="WPu-JB-xFi" firstAttribute="top" secondItem="gLa-Od-m3B" secondAttribute="top" id="NMT-Uc-5Hm"/>
                                     <constraint firstItem="Nev-Ep-yYT" firstAttribute="top" secondItem="Vhj-Iz-nSU" secondAttribute="bottom" id="Nh2-oA-xIe"/>
-                                    <constraint firstItem="POj-mT-bJ9" firstAttribute="top" secondItem="47V-uZ-owl" secondAttribute="bottom" constant="20" id="VK1-5z-bGL"/>
                                     <constraint firstItem="4Og-YH-A9a" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="Vrc-et-gfh"/>
                                     <constraint firstItem="Vhj-Iz-nSU" firstAttribute="leading" secondItem="Nev-Ep-yYT" secondAttribute="leading" id="VsA-lf-pzg"/>
                                     <constraint firstItem="Nev-Ep-yYT" firstAttribute="top" secondItem="WlD-yF-w0c" secondAttribute="bottom" constant="40" id="WZn-cU-yaf"/>
+                                    <constraint firstItem="WPu-JB-xFi" firstAttribute="width" secondItem="gLa-Od-m3B" secondAttribute="width" multiplier="3/4" id="Wfc-QI-Q8R"/>
+                                    <constraint firstItem="4Og-YH-A9a" firstAttribute="height" secondItem="WPu-JB-xFi" secondAttribute="height" multiplier="1/4" id="YX6-RT-1Eb"/>
                                     <constraint firstItem="4Og-YH-A9a" firstAttribute="top" secondItem="Nev-Ep-yYT" secondAttribute="bottom" constant="30" id="bep-LD-u54"/>
                                     <constraint firstItem="WlD-yF-w0c" firstAttribute="centerX" secondItem="gLa-Od-m3B" secondAttribute="centerX" id="ejc-01-4QD"/>
-                                    <constraint firstItem="47V-uZ-owl" firstAttribute="top" secondItem="gLa-Od-m3B" secondAttribute="top" id="feu-hU-TpY"/>
                                     <constraint firstItem="WlD-yF-w0c" firstAttribute="top" secondItem="POj-mT-bJ9" secondAttribute="bottom" constant="5" id="rC7-jz-cVp"/>
-                                    <constraint firstItem="4Og-YH-A9a" firstAttribute="height" secondItem="47V-uZ-owl" secondAttribute="height" multiplier="1/4" id="ueU-zD-B8j"/>
                                     <constraint firstAttribute="trailing" secondItem="WlD-yF-w0c" secondAttribute="trailing" constant="20" id="zPr-tT-0T7"/>
                                 </constraints>
                             </view>

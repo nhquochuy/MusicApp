@@ -10,8 +10,7 @@ import UIKit
 
 class CircleImage: UIImageView {
     // MARK: Variable
-    let darkShadow = CALayer()
-    let lightShadow = CALayer()
+    var angle = 0
     
     // MARK: Override
     override func layoutSubviews() {
@@ -31,6 +30,16 @@ class CircleImage: UIImageView {
                     }
                 }
             }
+        }
+    }
+    
+    func rotateCoverImage() {
+        // pi : 180
+        // ? : 1
+        self.angle = (self.angle >= 360) ? 0 : self.angle + 2
+        UIView.animate(withDuration: 0.05) {
+            let rotateAngle = CGFloat.pi *  CGFloat(self.angle)
+            self.transform = .init(rotationAngle: rotateAngle / 180 )
         }
     }
 }
