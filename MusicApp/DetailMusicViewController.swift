@@ -85,6 +85,12 @@ class DetailMusicViewController: UIViewController {
     // MARK: Override
     override func viewDidLoad() {
         super.viewDidLoad()
+        //self.loadUI()
+        //self.doMusic()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.loadUI()
         self.doMusic()
     }
@@ -205,37 +211,10 @@ class DetailMusicViewController: UIViewController {
     private func doMusic() {
         if let music = self.music {
             if music.isPlaying {
-                self.addPeriodicTimeObserver()
+                //self.addPeriodicTimeObserver()
+                self.addTimeObserver()
             }
         }
-    }
-    
-    private func addPeriodicTimeObserver() {
-        if let player = self.playerShared.player {
-            // Invoke callback every half second
-            let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-            // Add time observer. Invoke closure on the main queue.
-            print("DetailMusicViewController -> Add Time Obsever")
-            self.playerShared.timeObsever = player.addPeriodicTimeObserver(forInterval: interval, queue: nil, using: {
-                [weak self] time in
-                guard let this = self else { return }
-                this.updateUIBlock()
-            })
-        }
-    }
-    
-    private func updateUIBlock() {
-        if let player = self.playerShared.player {
-            self.coverImage.rotateCoverImage()
-            let currentPlayingTime = CMTimeGetSeconds(player.currentTime())
-            self.timeSlider.value = Float(currentPlayingTime)
-            self.currentTimeLabel.text = self.changeTimeFormat(second: Int(currentPlayingTime))
-        }
-    }
-    
-    private func postNotification(isPlaying: Bool) {
-        self.responseInfor = (self.isPlayingState) ? ["musicID": self.musicID, "isPlaying" : isPlaying] : nil
-        NotificationCenter.default.post(name: NOTIFICATIONNAME.detailViewToListView, object: nil, userInfo: self.responseInfor)
     }
     
     private func actionPlayer(musicButtonState: MusicButtonState) {
@@ -261,14 +240,35 @@ class DetailMusicViewController: UIViewController {
     }
     
     private func initPlayer() {
-        if self.playerShared.musicID != self.musicID, let player = self.playerShared.player {
-            player.pause()
+        if self.playerShared.musicID != self.musicID {
             self.playerShared.initPlayer(urlString: "", musicID: musicID)
+        }
+    }
+    
+    private func addTimeObserver() {
+        let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        self.playerShared.addTimeObserver(intervalTime: interval) {
+            [weak self] (time) in
+            guard let this = self else { return }
+            this.updateUIBlock(time: time)
         }
     }
     
     private func removeTimeObserver() {
         self.playerShared.removeTimeObsever()
+    }
+    
+    private func updateUIBlock(time: CMTime) {
+        self.coverImage.rotateCoverImage()
+        //let currentPlayingTime = CMTimeGetSeconds(player.currentTime())
+        let currentPlayingTime = CMTimeGetSeconds(time)
+        self.timeSlider.value = Float(currentPlayingTime)
+        self.currentTimeLabel.text = self.changeTimeFormat(second: Int(currentPlayingTime))
+    }
+    
+    private func postNotification(isPlaying: Bool) {
+        self.responseInfor = (self.isPlayingState) ? ["musicID": self.musicID, "isPlaying" : isPlaying] : nil
+        NotificationCenter.default.post(name: NOTIFICATIONNAME.detailViewToListView, object: nil, userInfo: self.responseInfor)
     }
     
     private func updateMusic() {

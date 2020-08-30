@@ -82,31 +82,36 @@ class ListMusicViewController: UIViewController {
             self.changeCoverImage(musicID: musicID)
             self.repositoryShared.updateStateProp(id: musicID, isSelected: true, isPlaying: isPlaying)
         }
-        self.addPeriodicTimeObserver()
+        //self.addPeriodicTimeObserver()
+        self.addTimeObserver()
     }
     
     private func changeCoverImage(musicID: Int) {
-        if let music = MusicRepository.shared.getById(id: musicID) {
+        if let music = repositoryShared.getById(id: musicID) {
             guard let url = URL(string: music.cover_image_url) else { return }
             self.coverImage.loadCoverImage(url: url)
         }
     }
     
-    private func addPeriodicTimeObserver() {
-        print("ListMusicViewController -> Add Time Observer")
-        guard let player = self.playerShared.player else { return }
-        // Invoke callback every half second
+    private func addTimeObserver() {
         let interval = CMTime(seconds: 0.05, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        // Add time observer. Invoke closure on the main queue.
-        self.playerShared.timeObsever = player.addPeriodicTimeObserver(forInterval: interval, queue: .main, using: {
-            [weak self] time in
+//        self.playerShared.addTimeObserver(intervalTime: interval) {
+//            [weak self] time  in
+//            guard let this = self else { return }
+//            this.updateUIBlock()
+//        }
+        self.playerShared.addTimeObserver(intervalTime: interval) { [weak self] (time) in
             guard let this = self else { return }
-            this.coverImage.rotateCoverImage()
-        })
+            this.updateUIBlock()
+        }
     }
     
     private func removeTimeObserver() {
         self.playerShared.removeTimeObsever()
+    }
+    
+    private func updateUIBlock() {
+        self.coverImage.rotateCoverImage()
     }
 }
 

@@ -34,8 +34,8 @@ class AVPlayerHandler {
     
     // MARK: Function
     func initPlayer(urlString: String, musicID: Int) {
-//        let urlString = "https://data56.chiasenhac.com/downloads/1153/0/1152314-266359e8/128/Blue%20-%20Big%20Bang.mp3"
-//
+//        let urlString = "https://data25.chiasenhac.com/download2/2114/1/2113754-a7ae2820/128/Dao%20Mo%20But%20Ky%20Thap%20Nien%20Nhan%20Gian%20-%20Quac.mp3"
+
         if let url = URL(string: urlString) {
             print("AVPlayerHandler -> initPlayer: Player Inited With \(urlString)")
             self.player = AVPlayer(url: url)
@@ -61,6 +61,14 @@ class AVPlayerHandler {
             player.pause()
         } else {
             print("AVPlayerHandler -> pausePlayer: Music Could Not Pause")
+        }
+    }
+    
+    func addTimeObserver(intervalTime: CMTime, updateUI: @escaping (CMTime) -> Void) {
+        if let player = self.player {
+            self.timeObsever = player.addPeriodicTimeObserver(forInterval: intervalTime, queue: .main, using: { (time) in
+                updateUI(time)
+            })
         }
     }
     
